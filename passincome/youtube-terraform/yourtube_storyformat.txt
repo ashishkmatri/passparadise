@@ -1,0 +1,52 @@
+## YouTube Kids Stories Automation Project - Context
+
+### 1. STORY FORMAT
+- **Type**: Bedtime stories, moral stories, educational tales for kids aged 2-6
+- **Length**: 3-5 minutes per video (12-14 scenes)
+- **Themes**: 
+  - Evergreen: Friendship, courage, kindness, overcoming fears, being different
+  - Holiday: Christmas, Diwali, Halloween, Easter, New Year, etc.
+- **Structure**: Each story has [SCENE: image description] markers for automation
+- **Characters**: Cute animals (penguins, rabbits, owls, stars, turtles)
+
+### 2. VIDEO STRUCTURE
+- **Format**: Image slideshow with TTS narration
+- **Resolution**: 1920x1080 (Full HD)
+- **Frame Rate**: 30 FPS
+- **Animation**: Twinkling stars background, pulsing glow effects, Ken Burns (pan/zoom)
+- **Audio**: edge-tts (Microsoft neural voices) for narration
+- **Music**: Royalty-free background music from Pixabay
+- **Intro**: 3 second title card with animated stars
+- **Outro**: 4 second "The End" card with subscribe CTA
+
+### 3. TECH STACK
+- **TTS**: edge-tts (free Microsoft voices) - en-US-AnaNeural for warm female voice
+- **Images**: Placeholder generation with Pillow/NumPy (upgrade to Leonardo.ai API later)
+- **Video**: FFmpeg for assembly
+- **Animation**: Python + Pillow for frame generation
+- **OS**: Ubuntu 22.04 on AWS EC2 t3.medium (4GB RAM)
+
+### 4. KEY SCRIPTS STRUCTURE
+```python
+# Main pipeline.py structure
+youtube-automation/
+├── pipeline.py              # Main orchestrator
+├── auto_generate.py         # One-command video generation
+├── config.py                # Settings (resolution, paths)
+├── api_keys.json            # API keys for online services
+├── requirements.txt         # Dependencies
+├── scripts/
+│   ├── scene_parser.py      # Parse [SCENE:] markers from stories
+│   ├── tts_generator.py     # edge-tts voice generation
+│   ├── image_generator.py   # Create/fetch images
+│   └── video_assembler.py   # FFmpeg video assembly
+├── stories/                 # Story text files (17 total)
+│   ├── little_star.txt
+│   ├── brave_rabbit.txt
+│   ├── penny_penguin_friend.txt
+│   ├── holiday_christmas_reindeer.txt
+│   └── ... (8 evergreen + 9 holiday)
+└── output/                  # Generated videos
+```
+
+### 5. SAMPLE STORY FORMAT (little_star.txt)

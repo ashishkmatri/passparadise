@@ -1,0 +1,6 @@
+edge-tts
+Pillow
+numpy
+pydub
+requests
+aiohttp

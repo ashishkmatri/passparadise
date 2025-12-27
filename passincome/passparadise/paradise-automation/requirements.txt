@@ -1,0 +1,20 @@
+# PassParadise - Python Dependencies
+
+# Image processing
+Pillow>=9.0.0
+
+# Audio/video metadata
+pydub>=0.25.0
+
+# HTTP requests for music downloads
+requests>=2.28.0
+
+# YouTube audio extraction
+yt-dlp>=2023.1.1
+
+# Async HTTP (optional, for parallel downloads)
+aiohttp>=3.8.0
+
+# System dependencies (install via apt/brew):
+# - ffmpeg
+# - ffprobe

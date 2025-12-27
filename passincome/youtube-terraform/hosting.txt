@@ -1,0 +1,14 @@
+### 7. HOSTING
+- **Current**: AWS EC2 t3.medium with $19.59 free credits
+- **Terraform**: IaC scripts for start/stop/backup/destroy lifecycle
+- **Cost strategy**: Start→Work→Stop (save 90%), Backup→Destroy (save 95%)
+
+### 8. MONETIZATION TIMELINE
+- Month 1-6: Build content (100+ videos), likely ₹0 earnings
+- Month 6-12: Reach 1000 subs + 4000 watch hours for monetization
+- Year 2+: Potential ₹5,000-₹20,000/month passive income
+
+### 9. WHAT I NEED NOW
+1. Regenerate all Python automation scripts
+2. Deploy EC2 using Terraform
+3. Generate first batch of videos
