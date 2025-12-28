@@ -1,0 +1,78 @@
+name: Create Music Video
+
+on:
+  workflow_dispatch:
+    inputs:
+      images_url:
+        description: 'URL to images zip file (e.g., Google Drive, Dropbox link)'
+        required: true
+        type: string
+      audio_url:
+        description: 'URL to audio file (mp3, m4a)'
+        required: true
+        type: string
+      duration:
+        description: 'Duration per image in seconds'
+        required: false
+        default: '7'
+        type: string
+      resolution:
+        description: 'Video resolution (width:height)'
+        required: false
+        default: '1920:1080'
+        type: string
+
+jobs:
+  create-video:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Download images
+        run: |
+          mkdir -p images
+          curl -L "${{ inputs.images_url }}" -o images.zip
+          unzip images.zip -d images/
+          echo "Downloaded images:"
+          find images -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.jpeg" \) | wc -l
+
+      - name: Download audio
+        run: |
+          mkdir -p audio
+          curl -L "${{ inputs.audio_url }}" -o audio/audio_file.mp3
+          echo "Audio file:"
+          ls -lh audio/
+
+      - name: Create music video
+        run: |
+          python create_music_video.py \
+            --images images/ \
+            --audio audio/audio_file.mp3 \
+            --duration ${{ inputs.duration }} \
+            --resolution ${{ inputs.resolution }} \
+            --output output_video.mp4
+
+      - name: Upload video artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: music-video
+          path: output_video.mp4
+          retention-days: 7
+
+      - name: Video info
+        run: |
+          echo "Video created successfully!"
+          ls -lh output_video.mp4
+          ffprobe output_video.mp4 2>&1 | grep -E "Duration|Video|Audio"
