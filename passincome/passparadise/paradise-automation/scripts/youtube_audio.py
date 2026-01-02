@@ -12,10 +12,32 @@ import sys
 import subprocess
 import hashlib
 import argparse
+import shutil
 from typing import Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import YOUTUBE_MUSIC_DIR
+
+
+def find_yt_dlp() -> str:
+    """Find yt-dlp executable, checking common locations."""
+    # Check if it's in PATH
+    yt_dlp_path = shutil.which('yt-dlp')
+    if yt_dlp_path:
+        return yt_dlp_path
+
+    # Check common locations
+    common_paths = [
+        os.path.expanduser('~/.local/bin/yt-dlp'),
+        '/usr/local/bin/yt-dlp',
+        '/usr/bin/yt-dlp',
+    ]
+
+    for path in common_paths:
+        if os.path.exists(path) and os.access(path, os.X_OK):
+            return path
+
+    return 'yt-dlp'  # Fallback to hoping it's in PATH
 
 
 def get_video_id(url: str) -> str:
@@ -72,8 +94,9 @@ def extract_audio(
     # First download to temp file
     temp_path = os.path.join(cache_dir, f"{video_id}_temp.%(ext)s")
 
+    yt_dlp_cmd = find_yt_dlp()
     cmd = [
-        'yt-dlp',
+        yt_dlp_cmd,
         '-x',  # Extract audio
         '--audio-format', 'mp3',
         '--audio-quality', '0',  # Best quality
@@ -140,8 +163,9 @@ def extract_audio(
 
 def get_video_info(youtube_url: str) -> Optional[dict]:
     """Get video info without downloading."""
+    yt_dlp_cmd = find_yt_dlp()
     cmd = [
-        'yt-dlp',
+        yt_dlp_cmd,
         '--dump-json',
         '--no-playlist',
         youtube_url

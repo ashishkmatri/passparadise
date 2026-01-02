@@ -37,8 +37,9 @@ CROSSFADE_DURATION = 0.5  # Longer crossfade for sensual mood
 
 # Duration settings
 TARGET_VIDEO_DURATION = 150  # 2.5 minutes default (in seconds)
-MIN_IMAGE_DURATION = 3  # Minimum seconds per image
-MAX_IMAGE_DURATION = 10  # Maximum seconds per image
+MIN_IMAGE_DURATION = 7  # Minimum seconds per image
+MAX_IMAGE_DURATION = 7  # Maximum seconds per image
+DEFAULT_IMAGE_DURATION = 7  # Fixed 7 seconds per image
 
 # Attribution text (for CC BY licensed music)
 ATTRIBUTION_TEMPLATE = """

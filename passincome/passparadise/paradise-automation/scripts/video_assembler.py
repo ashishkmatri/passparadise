@@ -227,32 +227,25 @@ def assemble_slideshow(
     ken_burns: bool = True,
     crossfade: bool = True,
     crossfade_duration: float = 0.5,
-    music_volume: float = 1.0
+    music_volume: float = 1.0,
+    duration_per_image: float = None
 ) -> str:
     """
     Assemble complete slideshow video from images with music.
 
-    Duration per image is calculated from music duration / number of images.
+    Duration per image: uses fixed duration (default 7s) if provided,
+    otherwise calculates from music duration.
     """
     os.makedirs(temp_dir, exist_ok=True)
 
     # Get music duration
     music_duration = get_audio_duration(music_path)
-
-    # Calculate duration per image (accounting for crossfades)
     num_images = len(images)
-    if crossfade and num_images > 1:
-        # Crossfades reduce total duration
-        total_crossfade_time = crossfade_duration * (num_images - 1)
-        available_duration = music_duration + total_crossfade_time
-    else:
-        available_duration = music_duration
 
-    duration_per_image = available_duration / num_images
-
-    # Clamp to min/max
-    from config import MIN_IMAGE_DURATION, MAX_IMAGE_DURATION
-    duration_per_image = max(MIN_IMAGE_DURATION, min(MAX_IMAGE_DURATION, duration_per_image))
+    # Use fixed duration if provided, otherwise calculate from music
+    from config import DEFAULT_IMAGE_DURATION
+    if duration_per_image is None:
+        duration_per_image = DEFAULT_IMAGE_DURATION
 
     print(f"Music duration: {music_duration:.1f}s")
     print(f"Images: {num_images}")
